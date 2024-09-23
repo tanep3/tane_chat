@@ -1,0 +1,19 @@
+version: '3'
+services:
+  tane_chat:
+    image: tanep/tane_chat:latest
+    ports:
+      - "5000:5000"  # ローカルのポート5000をコンテナ内のポート5000にマッピング
+    environment:
+      - MODEL_PATH=/app/model           # モデルのパスを指定
+      - N_THREADS=2                     # スレッド数
+      - CHAT_FORMAT=llama-3             # チャットフォーマット
+      - N_CTX=512                       # コンテキストサイズ
+      - BATCH_SIZE=512                  # バッチサイズ
+      - NUM_WORKERS=2                   # ワーカー数
+      - PORT=5000                       # Flaskアプリケーションのポート
+    restart: always  # PC再起動後に自動でコンテナを再起動
+    volumes:
+      - /LLMのggufファイルを置いているディレクトリ:/app/model  # モデルファイルをコンテナにマウント
+    tty: true  # ターミナルのインタラクションを有効にするための設定（必要に応じて）
+

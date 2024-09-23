@@ -1,0 +1,116 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgb(92, 214, 96);
+    color: white;
+}
+
+h1 {
+    margin: 0;
+    text-align: center;
+    color: white;
+}
+
+.settings-icon {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+#chatForm {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input[type="number"] {
+    width: 100px;
+}
+
+#submitButton {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#submitButton:hover {
+    background-color: #45a049;
+}
+
+#submitButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+#response {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    min-height: 200px;
+    text-align: left;
+}
+
+.settings {
+    background-color: #e8f5e9;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.settings-content {
+    display: none;
+}
+
+.settings-content.show {
+    display: block;
+}
+
+#user_input {
+    display: block;
+    margin: 0 auto;
+    width: calc(100% - 40px);
+    max-width: 720px;
+}

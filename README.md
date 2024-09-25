@@ -35,7 +35,7 @@ docker-compose up -d
 
 ### (1) WEBチャットとしての活用
 以下のURLにアクセスして、チャット画面を開きます。  
-`http://インストールしたサーバのIP:5000`
+`http://インストールしたサーバのIP:5005`
 
 ### (2) WEB-APIとしての活用
 
@@ -73,7 +73,7 @@ docker-compose up -d
 
 #### d. 使用例
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"system_prompt": "50文字程度に要約して回答してください。","user_input": "AIとは何ですか？","max_tokens": 512,"stream": true}' http://127.0.0.1:5000/generate
+curl -X POST -H "Content-Type: application/json" -d '{"system_prompt": "50文字程度に要約して回答してください。","user_input": "AIとは何ですか？","max_tokens": 512,"stream": true}' http://127.0.0.1:5005/generate
 ```
 
 ## 5. ライセンス情報

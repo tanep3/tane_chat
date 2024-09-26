@@ -64,7 +64,9 @@ function startStream() {
                 }
                 stopLoadingAnimation();  // 最初のレスポンスが返ってきたらアニメーション停止
                 const text = decoder.decode(value);
-                responseDiv.innerHTML += text;  // 応答を追加表示
+                // 受け取ったテキストの改行を <br> に変換
+                const formattedText = text.replace(/\n/g, '<br>');
+                responseDiv.innerHTML += formattedText;  // 応答を追加表示
                 readChunk();  // 次のチャンクを読み込み
             });
         }

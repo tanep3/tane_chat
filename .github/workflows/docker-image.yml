@@ -1,0 +1,41 @@
+name: Build and Push Docker Image
+
+# このワークフローをプッシュ時にトリガー
+on:
+  push:
+    branches:
+      - main  # `main`ブランチへのプッシュで実行
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # GitHub Actionsの仮想環境
+
+    steps:
+      # ソースコードをリポジトリからチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Docker Buildxのセットアップ
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # DockerHubへのログイン
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      # QEMUエミュレーションの設定（ARM64などの異なるアーキテクチャでのビルドをサポート）
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # マルチプラットフォーム対応のDockerイメージをビルドしてプッシュ
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64  # マルチプラットフォーム対応
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/tane_chat:latest
+

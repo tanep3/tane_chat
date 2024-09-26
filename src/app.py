@@ -47,7 +47,7 @@ def generate_response_stream(system_prompt, user_input, max_tokens):
     for chunk in response:
         if "content" in chunk["choices"][0]["delta"]:
             content = chunk["choices"][0]["delta"]["content"]
-            yield content.replace('\n', '<br>')
+            yield content
 
 
 # 非ストリーミングレスポンス関数

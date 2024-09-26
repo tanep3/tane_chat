@@ -4,7 +4,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # `main`ブランチへのプッシュで実行
+      - master  # `master`ブランチへのプッシュで実行
   workflow_dispatch:  # 手動トリガーの設定
 
 jobs:

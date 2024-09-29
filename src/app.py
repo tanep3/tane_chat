@@ -15,7 +15,9 @@ n_ctx = int(os.getenv("N_CTX", 512))
 batch_size = int(os.getenv("BATCH_SIZE", 512))
 num_workers = int(os.getenv("NUM_WORKERS", 1))
 port = int(os.getenv("PORT", 5000))  # ポートもここで環境変数から取得
-max_instances = int(os.getenv("MAX_INSTANCES", 2))  # インスタンスプールの最大数（デフォルトは2）
+max_instances = int(os.getenv("MAX_INSTANCES", 1))  # インスタンスプールの最大数（デフォルトは1）
+title = os.getenv("TITLE", "たねちゃっと")
+timeout=30  # LLM貸与のタイムアウト時間（秒）
 
 # ログの設定
 logging.basicConfig(level=logging.INFO)
@@ -29,7 +31,6 @@ def initialize_llm_instances():
     LLMのインスタンスを複数つくり、プールさせて運用することでレスポンスを向上させる。
     初期インスタンスをプールに作成して追加します。
     """
-    print("俺様！！起動したぜ！！")
     for i in range(max_instances):
         try:
             llm = Llama(
@@ -48,13 +49,15 @@ def initialize_llm_instances():
 # アプリケーション起動時にインスタンスプールを初期化
 initialize_llm_instances()
 
-def acquire_llm_instance(timeout=120):
+def acquire_llm_instance(timeout):
     """
     インスタンスプールからLLMインスタンスを取得します。
     他の人が使用中の場合は、終了するまで待ちます。
     """
     try:
         llm = llm_pool.get(timeout=timeout)
+        if llm is None:
+            raise TimeoutError("Llamaインスタンスの取得がタイムアウトしました。")
         return llm
     except Exception as e:
         logger.error(f"プールからLlamaインスタンスの取得に失敗しました: {e}")
@@ -73,9 +76,9 @@ def generate_response_stream(system_prompt, user_input, max_tokens):
     messages = [{"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_input}]
     
-    llm = acquire_llm_instance()
+    llm = acquire_llm_instance(timeout)
     if not llm:
-        yield "Error: しばらく時間をおいてから、もう一度お試し下さい。"
+        yield "タイムアウトしました。時間をおいてからもう一度お試し下さい。"
         return
     try:
         response = llm.create_chat_completion(
@@ -100,8 +103,10 @@ def generate_response_stream(system_prompt, user_input, max_tokens):
 def generate_response_non_stream(system_prompt, user_input, max_tokens):
     messages = [{"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_input}]
-    
-    llm = acquire_llm_instance()
+
+    llm = acquire_llm_instance(timeout)
+    if not llm:
+        return "タイムアウトしました。時間をおいてからもう一度お試し下さい。"
     try:
         response = llm.create_chat_completion(
             messages=messages,
@@ -116,14 +121,10 @@ def generate_response_non_stream(system_prompt, user_input, max_tokens):
         if choices:
             full_response = choices[0]["message"]["content"]
         else:
-            full_response = {
-                "response": "応答が見つかりませんでした。"
-            }
+            full_response = "応答が見つかりませんでした。"
     except Exception as e:
         logger.error(f"LLMの処理中にエラーが発生しました: {e}")
-        full_response = {
-            "response": "LLMの処理中にエラーが発生しました。"
-        }
+        full_response = "LLMの処理中にエラーが発生しました。時間をおいてからもう一度お試し下さい。"
     finally:
         release_llm_instance(llm)
 
@@ -169,7 +170,7 @@ def index():
             response = generate_response_non_stream(system_prompt, user_input, max_tokens)
             return response
 
-    return render_template("index.html")
+    return render_template("index.html", title=title)
 
 
 if __name__ == "__main__":

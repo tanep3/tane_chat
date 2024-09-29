@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/styles.css">
-    <title>たねちゃっと</title>
+    <title>{{ title }}</title>
 </head>
+
 <body>
     <header>
         <div class="settings-icon" onclick="toggleSettings()">⚙️</div>
-        <h1>たねちゃっと</h1>
+        <h1>{{ title }}</h1>
         <div style="width: 24px;"></div> <!-- 右側のスペース調整用 -->
     </header>
-    
+
     <div class="container">
         <form id="chatForm" onsubmit="event.preventDefault(); startStream();">
             <div class="settings">
@@ -27,19 +29,20 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label for="user_input">メッセージを入力してください:</label>
                 <textarea id="user_input" name="user_input" rows="4" maxlength="1024" required></textarea>
             </div>
-            
+
             <button id="submitButton" type="submit">送信</button>
         </form>
-        
+
         <div id="response"></div>
     </div>
 
     <script src="/static/js/main.js"></script>
     <script src="/static/js/chat.js"></script>
 </body>
+
 </html>

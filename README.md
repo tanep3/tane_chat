@@ -23,7 +23,7 @@ sudo apt install docker docker-compose
 ```
 
 1. [docker-compose.yml](docker-compose.yml) をダウンロードし、本アプリ起動用フォルダ（任意の場所）に配置します。  
-   `[volumes:]` の `/LLMのggufファイルを置いているディレクトリ` を、LLMを配置した場所に書き換えます。
+   `[volumes:]` の `/LLMのggufファイルを置いているパス` を、LLMを配置した場所に書き換えます。
 2. `docker-compose.yml` の環境変数 `[environment:]` の値を好みに応じて調整します。
 3. 以下のコマンドで、たねちゃっとのダウンロード＆初期起動を行います。
 

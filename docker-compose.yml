@@ -14,7 +14,7 @@ services:
       - MAX_INSTANCES=1                 # 同時にリクエストを受け付ける数（多いとメモリを食います）
       - NUM_WORKERS=1                   # ワーカー数（基本このまま）
       - PORT=5005                       # Flaskアプリケーションのポート（ここは変更しないで下さい。）
-      - TITLE="たねちゃっと"             # このシステムの見出し
+      - TITLE=たねちゃっと               # このシステムの見出し
     restart: always  # PC再起動後に自動でコンテナを再起動
     volumes:
       - /LLMのggufファイルを置いているパス:/app/model  # モデルファイルをコンテナにマウント
